@@ -1,3 +1,9 @@
+0.4.2 - January 20, 2017
+------------------------
+
+* Add missing methods for `ZipCode`
+* Add zip code usage examples to README
+
 0.4.1 - January 20, 2017
 ------------------------
 

@@ -63,6 +63,18 @@ Usage
     17031010100
     17031010201
 
+### Iterate over zip codes
+
+    >>> from chicago import ZIP_CODES
+    >>> for zip_code in ZIP_CODES:
+    ...     print(zip_code)
+    60601
+    60602
+    60603
+    60604
+    60605
+    60606
+
 ### Get the census tract that contains a Chicago precinct
 
     >>> from chicago import PRECINCTS
@@ -78,6 +90,15 @@ Usage
     >>> tract = get_suburban_cook_tract_from_precinct_number(precinct.objectid)
     >>> print(tract)
     17031804202
+
+### Test that a zip code is in Chicago
+
+    >>> from chicago import ZIP_CODES
+    >>> ZIP_CODES.is_chicago('60651')
+    True
+    >>> ZIP_CODES.is_chicago('12345')
+    False
+
 
 
 Data Sources

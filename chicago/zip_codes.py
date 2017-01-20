@@ -12,6 +12,12 @@ class ZipCode(Model):
         'zip',
     ]
 
+    def __str__(self):
+        return self.zip
+
+    def __repr__(self):
+        return "ZipCode(zip='{z.zip}')".format(z=self)
+
 
 class ZipCodeCollection(Collection):
     model = ZipCode
