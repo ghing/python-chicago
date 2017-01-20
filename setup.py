@@ -21,6 +21,7 @@ setup(
     author_email='geoffhing@gmail.com',
     url='https://github.com/newsapps/python-chicago',
     description='Chicago meta information and other fun stuff',
+    long_description=long_description,
     packages=find_packages(exclude=["tests", "tests.*"]),
     include_package_data=True,
     install_requires=[

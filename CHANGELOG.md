@@ -1,3 +1,8 @@
+0.4.1 - January 20, 2017
+------------------------
+
+* Fix conversion of README for PyPI
+
 0.4.0 - January 20, 2017
 ------------------------
 
