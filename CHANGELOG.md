@@ -1,3 +1,10 @@
+0.4.0 - January 20, 2017
+------------------------
+
+* Use Invoke instead of Fabric for build tasks
+* Fix a few Python 3 quirks
+* Add zip codes from [spatial data on the data portal](https://data.cityofchicago.org/Facilities-Geographic-Boundaries/Boundaries-ZIP-Codes/gdcf-axmw).
+
 0.3.1 - March 22, 2016
 ----------------------
 

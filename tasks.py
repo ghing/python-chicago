@@ -304,6 +304,15 @@ def generate_suburban_cook_precinct_tract_crosswalk(precincts_path=None,
     _generate_precinct_tract_crosswalk(tracts_path, precincts_path, dest,
         tract_properties, precinct_properties, crosswalk_tract_properties)
 
+def _download_zip_code_geojson(url=CHICAGO_ZIP_CODE_GEOJSON_URL, dest=None):
+    if dest is None:
+        dest = os.path.join(OUTPUT_DATA_DIR, 'chicago_zip_codes.geojson')
+
+    _download_file(url, dest=dest)
+
+@task
+def download_zip_code_geojson(ctx):
+    _download_zip_code_geojson()
 
 @task
 def build_precinct_to_tract_crosswalks(ctx):
@@ -319,7 +328,7 @@ def build_precinct_to_tract_crosswalks(ctx):
     generate_chicago_precinct_tract_crosswalk()
     generate_suburban_cook_precinct_tract_crosswalk()
 
-@task(pre=[build_precinct_to_tract_crosswalks])
+@task(pre=[download_zip_code_geojson, build_precinct_to_tract_crosswalks])
 def build(ctx):
     pass
 

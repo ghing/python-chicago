@@ -1,4 +1,5 @@
 import csv
+import json
 import os.path
 
 
@@ -70,9 +71,30 @@ class Collection(object):
         try:
             return self._from_csv_file(csvfile)
         except KeyError:
-            # Couldn't parse CSV properly, so csvfile is probably a string
+            # Couldn't parse CSV properly, so csvfile is probably a path
             with open(csvfile, 'r') as f:
                 return self._from_csv_file(f)
+
+    def _from_geojson_file(self, jsonfile):
+        model_cls = self.get_model()
+        data = json.load(jsonfile)
+        for feature in data['features']:
+            model_kwargs = self.transform_row(feature['properties'])
+            self.add_item(model_cls(**model_kwargs))
+
+        self.default_sort()
+
+        return self
+
+    def from_geojson(self, jsonfile):
+        try:
+            return self._from_geojson_file(jsonfile)
+        except AttributeError:
+            # Couldn't parse JSON properly, so jsonfile s probably a path
+            with open(jsonfile, 'r') as f:
+                return self._from_geojson_file(f)
+
+
 
     def transform_row(self, row):
         return row
