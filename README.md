@@ -94,12 +94,14 @@ Data Sources
 Building the data
 -----------------
 
-This package uses Fabric to generate the CSV files that underly the Python API.
+This package uses [Invoke](http://www.pyinvoke.org/) to generate the data files that underly the Python API.
 
 ### Cleaning up build files
 
-    fab clean
+    invoke clean
 
-### Generating precinct to census tract crosswalk CSVs
+### Building the data files
 
-    fab build_precinct_to_tract_crosswalks
+This includes the precinct to census tract crosswalk CSVs.
+
+    invoke build

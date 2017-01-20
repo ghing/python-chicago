@@ -8,6 +8,7 @@ import shutil
 from six.moves.urllib.parse import urlparse
 
 import fiona
+from invoke import task
 import requests
 from shapely.geometry import shape
 
@@ -50,17 +51,17 @@ def _download_file(url, dest=None):
 
     response = requests.get(url)
 
-    with open(dest, 'w') as f:
+    with open(dest, 'wb') as f:
         f.write(response.content)
 
 
 ILLINOIS_TRACTS_SHAPEFILE_URL = 'http://www2.census.gov/geo/tiger/TIGER2015/TRACT/tl_2015_17_tract.zip'
 ILLINOIS_COUNTY_FIPS_URL = 'http://www2.census.gov/geo/docs/reference/codes/files/st17_il_cou.txt'
+CHICAGO_TRACTS_GEOJSON_URL = 'https://data.cityofchicago.org/api/geospatial/5jrd-6zik?method=export&format=GeoJSON'
+CHICAGO_ZIP_CODE_GEOJSON_URL = 'https://data.cityofchicago.org/api/geospatial/gdcf-axmw?method=export&format=GeoJSON'
 
 
-def download_chicago_tracts(
-        url='https://data.cityofchicago.org/api/geospatial/5jrd-6zik?method=export&format=GeoJSON',
-        dest=None):
+def download_chicago_tracts(url=CHICAGO_TRACTS_GEOJSON_URL, dest=None):
     """
     Download census tract GeoJSON from url.
     """
@@ -304,7 +305,8 @@ def generate_suburban_cook_precinct_tract_crosswalk(precincts_path=None,
         tract_properties, precinct_properties, crosswalk_tract_properties)
 
 
-def build_precinct_to_tract_crosswalks():
+@task
+def build_precinct_to_tract_crosswalks(ctx):
     download_chicago_tracts()
     download_illinois_tracts()
     download_illinois_county_fips_codes()
@@ -317,7 +319,14 @@ def build_precinct_to_tract_crosswalks():
     generate_chicago_precinct_tract_crosswalk()
     generate_suburban_cook_precinct_tract_crosswalk()
 
+@task(pre=[build_precinct_to_tract_crosswalks])
+def build(ctx):
+    pass
 
-def clean():
-    shutil.rmtree(TEMP_DATA_DIR)
+@task
+def clean(ctx):
+    try:
+        shutil.rmtree(TEMP_DATA_DIR)
 
+    except IOError:
+        pass
